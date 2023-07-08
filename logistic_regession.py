@@ -66,3 +66,4 @@ if __name__ =="__main__":
     probs = model.predict_proba(grid).reshape(xx1.shape)
     plt.contour(xx1, xx2, probs, [0.5], linewidths=1, colors='black')
     plt.show()
+
