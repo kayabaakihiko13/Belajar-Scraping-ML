@@ -11,41 +11,43 @@ class logistik_regession:
         self.theta = None
 
     
-    def __sigmoid(self,z):
-        return 1 / (1+np.exp(-z))
+    def __sigmoid(self,z:np.ndarray):
+        return 1 / (1 + np.exp(-z))
 
 
     def __costFunction(self,h:np.array,
-                       y:np.array):
+                       y:np.ndarray):
         n = h.shape[0]
-        return (-y * np.log(h) - (1-y) *np.log(1 - h)).mean()
+        return (-y * np.log(h) - (1 - y) *np.log(1 - h)).mean()
 
     
     def fit(self,x:np.array,y:np.array)-> object:
         X = np.array(x)
         y = np.array(y)
         if self.intercept:
-            size = np.ones((X.shape[0],1))
-            X=np.concatenate((size,X),axis=1)
+            size = np.ones((X.shape[0], 1))
+            X=np.concatenate((size,X), axis=1)
         self.theta = np.zeros(X.shape[1])
         for i in range(self.iterable):
-            z = np.dot(X,self.theta)
+            z = np.dot(X, self.theta)
             h = self.__sigmoid(z)
-            gradient = np.dot(X.T,(h-y))/y.size
+            gradient = np.dot(X.T, (h - y)) / y.size
             self.theta -= self.learning_path * gradient
             z = np.dot(X,self.theta)
             h = self.__sigmoid(z)
-            loss = self.__costFunction(h,y)
+            loss = self.__costFunction(h, y)
             print(f"i:{i}loss:{loss}")
         return self
-    def predict_proba(self,x:np.array):
+    def predict_proba(self, x: np.array):
         X = np.array(x)
         if self.intercept:
-            size = np.ones((X.shape[0],1))
-            X=np.concatenate((size,X),axis=1)
-        return self.__sigmoid(np.dot(X,self.theta))
+            size = np.ones((X.shape[0], 1))
+            X=np.concatenate((size,X), axis=1)
+        return self.__sigmoid(np.dot(X, self.theta))
+
     def prediction(self,x):
         return self.predict_proba(x).round()
+
 if __name__ =="__main__":
     from sklearn import datasets
     iris = datasets.load_iris()
